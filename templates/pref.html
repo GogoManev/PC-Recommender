@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions</title>
+</head>
+<body>
+    <form action="/recommender" method="POST">
+        <a>Budget</a>
+        <br>
+        <input type="text" name="Budget" />
+        <br>
+        <a>Portability?</a>
+        <br>
+        <input type="radio" name="Portability" value="Yes" id="Yes">
+        <label for="Yes">Yes</label>
+        <input type="radio" name="Portability" value="No" id="No">
+        <label for="No">No</label>
+        <br>
+        <a>What will you mainly use it for?</a>
+        <br>
+        <input type="radio" name="Usage" value="Gaming" id="Gaming">
+        <label for="Gaming">Gaming</label>
+        <input type="radio" name="Usage" value="Work" id="Work">
+        <label for="Work">Work</label>
+        <input type="radio" name="Usage" value="Browsing the web" id="Browsing the web">
+        <label for="Browsing the web">Browsing the web</label>
+        <input type="radio" name="Usage" value="Entertainment" id="Entertainment">
+        <label for="Entertainment">Entertainment</label>
+        <br>
+        <a>Do you want the PC to be prebuilt? </a> 
+        <br>
+        <input type="radio" name="Prebuilt" value="Yes" id="Yes">
+        <label for="Yes">Yes</label>
+        <input type="radio" name="Prebuilt" value="No" id="No">
+        <label for="No">No</label>
+        <input type="radio" name="Prebuilt" value="Don't Care" id="Don't Care">
+        <label for="Don't Care">Don't Care</label>
+        <br>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>

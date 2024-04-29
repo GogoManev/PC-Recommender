@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>PC-Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <script src="{{ url_for('static', filename='index.js')}}"></script>
 <body>
@@ -10,5 +11,7 @@
     <a>Site is WIP! {{ text }}</a>
     <br>
     <a href="/test">Do not click me</a>
+    <br>
+    <a href="/preferences">Enter your preferences!</a>
 </body>
 </html>
