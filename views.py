@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, redirect, render_template, request, url_for
 
 views = Blueprint(__name__, "views")
 
@@ -23,13 +23,23 @@ def test():
 
 @views.route("/preferences")
 def preferences():
-    return render_template("pref.html")
+    error = request.args.get('error')
+    return render_template("pref.html", error=error)
 
 
 @views.route("/recommender", methods=['POST', 'GET'])
 def recommender():
+    error = None
     if request.method == 'GET':
-        return f"The URL /data is accessed directly. Try going to '/form' to submit form"
+        return redirect(url_for('views.preferences', error='Please enter your preferences first!'))
     if request.method == 'POST':
-        form_data = request.form
-        return render_template('recommender.html', form_data=form_data)
+        if request.form['Budget'] < str(0):
+            error = 'Please enter a valid number for your budget!'
+        if error:
+            return redirect(url_for('views.preferences', error=error))
+
+        if int(request.form['Budget']) < 50:
+            return "<h1>You are too poor to afford a PC 🤣🤣🤣</h1>\
+            <a href='/'>Vurni se</a>"
+
+        return render_template('recommender.html', form_data=request.form)
