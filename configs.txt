@@ -1,0 +1,3 @@
+GT 710, Pentium, 4GB
+RTX 3060, Ryzen 5, 16GB
+RTX 5090, i11, 256GB
