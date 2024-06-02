@@ -3,21 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <h1>YOUR PC SHOULD BE:</h1>
+    <div id="navbar">
+        <div id="logo">
+            <a href="/">PC-Recommender</a>
+        </div>
+        <div id="links">
+            <a href="/preferences">Start</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    <h1>Your options</h1>
     <br>
     {% for key,value in form_data.items() %}
     <a>{{key}}:</a>
     <a>{{value}}</a>
     <br>
     {% endfor %}
+    <h2>Closest Match:</h2>
+    <img src={{image}}>
+    <br>
     {% for key, value in PC.items() %}
     <a>{{key}}:</a>
-    <a>{{value}}</a>
+    <strong>{{value}}</strong>
     <br>
     {% endfor %}
+    <h4>Links (Ardes)</h4>
+    {% for key, value in links.items() %}
+    <a href={{value}}>{{key}}</a>
     <br>
-    <a href="/">Vurni se</a>
+    {% endfor %}
 </body>
 </html>

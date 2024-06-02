@@ -3,12 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Questions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
+    <div id="navbar">
+        <div id="logo">
+            <a href="/">PC-Recommender</a>
+        </div>
+        <div id="links">
+            <a href="/preferences">Start</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    <hr>
     {%if error%}
     <h4>{{ error }}</h4>
     {% endif%}
-    <a href="/">Go back</a>
     <form action="/recommender" method="POST">
         <a>Budget</a>
         <br>
@@ -24,13 +34,11 @@
         <a>What will you mainly use it for?</a>
         <br>
         <input type="radio" name="Usage" value="Gaming" id="Gaming" required>
-        <label for="Gaming">Gaming</label>
+        <label for="Gaming">Graphics Intense Tasks (Gaming, Rendering, etc.)</label>
         <input type="radio" name="Usage" value="Work" id="Work">
         <label for="Work">Work/School</label>
-        <input type="radio" name="Usage" value="Browsing the web" id="Browsing the web">
-        <label for="Browsing the web">Browsing the web</label>
         <input type="radio" name="Usage" value="Entertainment" id="Entertainment">
-        <label for="Entertainment">Entertainment</label>
+        <label for="Entertainment">Browsing the web, Entertainment</label>
         <br>
         <a>Do you want the PC to be prebuilt? </a> 
         <br>
@@ -40,6 +48,15 @@
         <label for="No">No</label>
         <input type="radio" name="Prebuilt" value="Don't Care" id="Don't Care">
         <label for="Don't Care">Don't Care</label>
+        <br>
+        <a>Preferred Operating System? </a>
+        <br>
+        <input type="radio" name="OS" value="Any" id="Any" required>
+        <label for="Any">Any</label>
+        <input type="radio" name="OS" value="Windows" id="Windows">
+        <label for="Windows">Windows</label>
+        <input type="radio" name="OS" value="macOS" id="macOS">
+        <label for="macOS">macOS</label>
         <br>
         <input type="submit" value="Submit" />
     </form>

@@ -7,10 +7,18 @@
 </head>
 <script src="{{ url_for('static', filename='index.js')}}"></script>
 <body>
-    <h1> PC Recommender</h1>
+    <div id="navbar">
+        <div id="logo">
+            <a href="/">PC-Recommender</a>
+        </div>
+        <div id="links">
+            <a href="/preferences">Start</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    <hr>
+
     <a>Site is WIP! {{ text }}</a>
-    <br>
-    <a href="/test">Do not click me</a>
     <br>
     <a href="/preferences">Enter your preferences!</a>
 </body>

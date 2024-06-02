@@ -1,3 +1,3 @@
-GT 710, Pentium, 4GB
+~ 440 lv., AMD Ryzen 5 2500X (3.6GHz), 8GB (2x4GB DDR4 2666 Silicon Power), NVIDIA Geforce GT 210, 1GB, MSI A520M-A PRO, 256GB SSD Silicon Power Ace A55, 400W Makki ATX400-120, Segotep V5 Black, ARCTIC Alpine 23, https://ardes.bg/product/amd-ryzen-5-2500x-3-6ghz-tray-yd250xbbafmpk-130228, https://ardes.bg/product/arctic-alpine-23-acalp00035a-203969, https://ardes.bg/product/msi-a520m-a-pro-911-7c96-001-195908, https://ardes.bg/product/4gb-ddr4-2666-silicon-power-sp004gblfu266x02-233654, https://ardes.bg/product/biostar-geforce-gt-210-1gb-vn2103nhg6-205590, https://ardes.bg/product/256gb-ssd-silicon-power-ace-a55-sp256gbss3a55s25-101628, https://ardes.bg/product/400w-makki-atx400-120-makki-atx400-120-302082, https://ardes.bg/product/segotep-v5-cheren-sg-v5-148858, https://ardes.bg/uploads/p/kutiya-za-nastolen-kompyutar-segotep-v5-mid-tower-245364.jpg
 RTX 3060, Ryzen 5, 16GB
 RTX 5090, i11, 256GB

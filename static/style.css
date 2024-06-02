@@ -1,3 +1,29 @@
-h1 {
-    font-family:cursive;
+#navbar {
+    background-color: rgb(245, 208, 148);
+    position: sticky;
+    position: -webkit-sticky;
+    display: flex;
+    top: 0%;
+    width: 100%;
+    z-index: 100;
+}
+
+#links > a{
+    padding-top: 2px;
+    padding-right: 20px;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    float: left;
+}
+
+#logo > a{
+    color: black;
+    padding-left:10px;
+    padding-right:30px;
+    font-family: cursive;
+    font-size: 20px;
+    font-weight: bolder;
+    text-decoration: none;
 }
