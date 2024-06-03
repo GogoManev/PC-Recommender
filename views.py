@@ -67,18 +67,18 @@ def pickAComputer(file):
     image = None
 
     for line in lines:
-        if 380 <= int(request.form['Budget']) < 580:
+        if 380 <= int(request.form['Budget']) < 620:
             index = 0
-        elif 580 <= int(request.form['Budget']) < 900:
+        elif 620 <= int(request.form['Budget']) < 920:
             index = 1
-        elif 900 <= int(request.form['Budget']) < 1300:
+        elif 920 <= int(request.form['Budget']) < 1290:
             index = 2
-        elif 1300 <= int(request.form['Budget']) < 1700:
+        elif 1290 <= int(request.form['Budget']) < 1900:
             if request.form['Usage'] == 'Gaming':
                 index = 3
             else:
                 index = 4
-        elif 1700 <= int(request.form['Budget']) < 2100:
+        elif 1900 <= int(request.form['Budget']):
             if request.form['OS'] == "Windows" or request.form['Usage'] == 'Gaming':
                 index = 5
             elif request.form['OS'] == "macOS" or request.form['Usage'] != "Gaming":
@@ -103,7 +103,7 @@ def pickAComputer(file):
                      Sl, PSUl, Casel, Image) = lines[index].strip().split(', ')
                     pc = {"Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM, "GPU VRAM": VRAM,
                           "Motherboard": Motherboard, "Storage": Storage, "Power Supply Unit": PSU,
-                          "Computer Case": Case}
+                          "Computer Case": Case, "Cooler": Cooler}
                     links = {"CPU Link": CPUl, "Cooler Link": Cl, "Motherboard Link": Ml, "RAM Link": RAMl,
                              "GPU Link": GPUl, "Storage Link": Sl, "PSU Link": PSUl, "Case Link": Casel}
                     image = Image
