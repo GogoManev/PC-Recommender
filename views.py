@@ -1,8 +1,9 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, send_file
+from random import randrange
+import io
 
 views = Blueprint(__name__, "views")
 
-text1 = "WOW"
 form_data = {
     'key1(field1_name)': 'value1(field1_value)',
     'key2(field2_name)': 'value2(field2_value)',
@@ -13,7 +14,13 @@ form_data = {
 
 @views.route("/")
 def home():
+    text1 = randrange(100)
     return render_template("index.html", text=text1)
+
+
+@views.route("/about")
+def about():
+    return render_template("about.html")
 
 
 @views.route("/preferences")
@@ -35,17 +42,15 @@ def recommender():
         if request.form['Budget'] < str(0):
             error = 'Please enter a valid number for your budget!'
 
-        if 0 < int(request.form['Budget']) < 50:
+        if 0 < int(request.form['Budget']) < 380:
             return "<h1>You are too poor to afford a PC 🤣🤣🤣</h1> \
             <a href='https://www.jobs.bg/'> Fix that </a> \
             <br> \
             <a href='/'>Vurni se</a>"
 
-        if (request.form['Portability'] == 'No' and request.form['Prebuilt'] == 'No' or
-                request.form['Prebuilt'] == "Don't Care"):
+        if request.form['Portability'] == 'No' and request.form['Prebuilt'] != 'Yes':
             pc, links, image = pickAComputer('configs.txt')
-        elif (request.form['Portability'] == 'No' and request.form['Prebuilt'] == 'Yes' or
-              request.form['Prebuilt'] == "Don't Care"):
+        elif request.form['Portability'] == 'No' and request.form['Prebuilt'] != 'No':
             pc, links, image = pickAComputer('prebuilts.txt')
         elif request.form['Portability'] == 'Yes':
             pc, links, image = pickAComputer('laptops.txt')
@@ -65,6 +70,7 @@ def pickAComputer(file):
     pc = None
     links = None
     image = None
+    pcb = 0
 
     for line in lines:
         if 380 <= int(request.form['Budget']) < 620:
@@ -78,6 +84,7 @@ def pickAComputer(file):
                 index = 3
             else:
                 index = 4
+
         elif 1900 <= int(request.form['Budget']):
             if request.form['OS'] == "Windows" or request.form['Usage'] == 'Gaming':
                 index = 5
@@ -87,18 +94,24 @@ def pickAComputer(file):
         if request.form['OS'] == "macOS":
             index = 6
 
+        if request.form['Prebuilt'] == "Don't Care":
+            if (380 <= int(request.form['Budget']) <= 440 or 620 <= int(request.form['Budget']) <= 676 or
+                    939 <= int(request.form['Budget']) <= 1200 or 1500 <= int(request.form['Budget']) <= 1800):
+                pcb = 1
+            else:
+                pcb = 0
+
         if index is not None:
             if request.form['Portability'] == 'No':
-                if request.form['Prebuilt'] == 'Yes':
+                if request.form['Prebuilt'] == 'Yes' or pcb == 1:
                     Brand, Model, Price, CPU, RAM, GPU, VRAM, Motherboard, Storage, PSU, Case, Cooler, OS, Link, Image = \
-                    lines[
-                        index].strip().split(', ')
+                        lines[index].strip().split(', ')
                     pc = {'Brand': Brand, "Model": Model, "Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM,
                           "GPU VRAM": VRAM, "Motherboard": Motherboard, "Storage": Storage, "Power Supply Unit": PSU,
                           "Computer Case": Case, "Operating System": OS}
                     links = {'Computer Link': Link}
                     image = Image
-                elif request.form['Prebuilt'] == 'No':
+                elif request.form['Prebuilt'] == 'No' or pcb == 0:
                     (Price, CPU, RAM, GPU, VRAM, Motherboard, Storage, PSU, Case, Cooler, CPUl, Cl, Ml, RAMl, GPUl,
                      Sl, PSUl, Casel, Image) = lines[index].strip().split(', ')
                     pc = {"Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM, "GPU VRAM": VRAM,
@@ -107,8 +120,7 @@ def pickAComputer(file):
                     links = {"CPU Link": CPUl, "Cooler Link": Cl, "Motherboard Link": Ml, "RAM Link": RAMl,
                              "GPU Link": GPUl, "Storage Link": Sl, "PSU Link": PSUl, "Case Link": Casel}
                     image = Image
-                # if request.form['Prebuilt'] == "Don't Care":
-                # kato napravq vsichki konfiguracii
+
             else:
                 (Brand, Model, Price, CPU, RAM, GPU, VRAM, Storage, DisplaySize, DisplayRes, DisplayBri,
                  Battery, Camera, Bluetooth, wifi, Weight, PA, OS, Color, Link, Image) = lines[index].strip().split(
@@ -122,3 +134,10 @@ def pickAComputer(file):
                 image = Image
 
     return pc, links, image
+
+
+# def download(pc):
+#     buffer = io.BytesIO()
+#     buffer.write(pc.encode('utf-8'))
+#     buffer.seek(0)
+#     return send_file(buffer, as_attachment=True, download_name='pc_specs.txt', mimetype='text/plain')

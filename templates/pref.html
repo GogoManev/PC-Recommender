@@ -13,6 +13,7 @@
         <div id="links">
             <a href="/preferences">Start</a>
             <a href="/about">About</a>
+            <a href="https://github.com/GogoManev/PC-Recommender">Repo</a>
         </div>
     </div>
     <hr>
@@ -20,44 +21,54 @@
     <h4>{{ error }}</h4>
     {% endif%}
     <form action="/recommender" method="POST">
+    <div id="Option">
         <a>Budget</a>
         <br>
         <input type="number" name="Budget" required/> <a>leva</a>
         <br>
-        <a>Portability?</a>
+    </div>
+    <div id="Option">
+        <a>Type of device?</a>
         <br>
-        <input type="radio" name="Portability" value="No" id="Nope">
-        <label for="No">No</label>
         <input type="radio" name="Portability" value="Yes" id="Ye" required>
-        <label for="Yes">Yes</label>
+        <label for="Ye">Laptop</label> <br>
+        <input type="radio" name="Portability" value="No" id="Nope">
+        <label for="Nope">Computer</label> <br>
         <br>
+    </div>
+    <div id="Option">
         <a>What will you mainly use it for?</a>
         <br>
         <input type="radio" name="Usage" value="Gaming" id="Gaming" required>
-        <label for="Gaming">Graphics Intense Tasks (Gaming, Rendering, etc.)</label>
+        <label for="Gaming">Graphics Intense Tasks (Gaming, Rendering, etc.)</label> <br>
         <input type="radio" name="Usage" value="Work" id="Work">
-        <label for="Work">Work/School</label>
+        <label for="Work">Work/School</label> <br>
         <input type="radio" name="Usage" value="Entertainment" id="Entertainment">
-        <label for="Entertainment">Browsing the web, Entertainment</label>
+        <label for="Entertainment">Browsing the web, Entertainment</label> <br>
         <br>
+    </div>
+    <div id="Option">
         <a>Do you want the PC to be prebuilt? </a>
         <br>
         <input type="radio" name="Prebuilt" value="Yes" id="Yes" required>
-        <label for="Yes">Yes</label>
+        <label for="Yes">Yes</label> <br>
         <input type="radio" name="Prebuilt" value="No" id="No">
-        <label for="No">No</label>
+        <label for="No">No</label> <br>
         <input type="radio" name="Prebuilt" value="Don't Care" id="Don't Care">
-        <label for="Don't Care">Don't Care</label>
+        <label for="Don't Care">Don't Care</label> <br>
         <br>
+    </div>
+    <div id="Option">
         <a>Preferred Operating System? </a>
         <br>
         <input type="radio" name="OS" value="Any" id="Any" required>
-        <label for="Any">Any</label>
+        <label for="Any">Any</label> <br>
         <input type="radio" name="OS" value="Windows" id="Windows">
-        <label for="Windows">Windows</label>
+        <label for="Windows">Windows</label> <br>
         <input type="radio" name="OS" value="macOS" id="macOS">
-        <label for="macOS">macOS</label>
+        <label for="macOS">macOS</label> <br>
         <br>
+    </div>
         <input type="submit" value="Submit" />
     </form>
 </body>

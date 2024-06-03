@@ -13,6 +13,7 @@
         <div id="links">
             <a href="/preferences">Start</a>
             <a href="/about">About</a>
+            <a href="https://github.com/GogoManev/PC-Recommender">Repo</a>
         </div>
     </div>
     <h1>Your options</h1>
@@ -22,18 +23,25 @@
     <a>{{value}}</a>
     <br>
     {% endfor %}
-    <h2>Closest Match:</h2>
+    <h2 id="closest">Closest Match:</h2>
     <img src={{image}}>
     <br>
-    {% for key, value in PC.items() %}
-    <a>{{key}}:</a>
-    <strong>{{value}}</strong>
-    <br>
-    {% endfor %}
-    <h4>Links (Ardes)</h4>
-    {% for key, value in links.items() %}
-    <a href={{value}}>{{key}}</a>
-    <br>
-    {% endfor %}
+    <div id="pcspecs">
+        {% for key, value in PC.items() %}
+        <a>{{key}}:</a>
+        <strong>{{value}}</strong>
+        <br>
+        {% endfor %}
+    </div>
+    <div id="pclinks">
+        <h4>Links (Ardes)</h4>
+        {% for key, value in links.items() %}
+        <a href={{value}}>{{key}}</a>
+        <br>
+        <br>
+        {% endfor %}    
+<!--        <button onclick={{save}} class="btn btn-success">Save</button>-->
+    </div>
+    
 </body>
 </html>
