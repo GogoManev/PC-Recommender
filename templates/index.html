@@ -5,7 +5,7 @@
     <title>PC-Recommender</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
-<script src="{{ url_for('static', filename='index.js')}}"></script>
+
 <body>
     <div id="navbar">
         <div id="logo">
@@ -19,10 +19,35 @@
     </div>
     <hr>
 
-    <a>Get recommended a new computer for your new home ;]</a>
-    <br>
-    <a>Number : {{text}}</a>
-    <br>
-    <a href="/preferences">Enter your preferences!</a>
+    <a>PC-Recommender is a website which recommends a new computer or laptop to its users based on a few questions. ;]</a> <br>
+    <a href="/preferences">Get recommended a PC today!</a> <br>
+
+    <div id="Reviews">
+        <h2>What users think about PC-Recommender:</h2> <br>
+        <div id="Reviewer">
+            <h4>Perunik Svilenov</h4>
+            <p>PC-Recommender is a really neat website. I have been playing on my old dusty Playstation 3 for a long time now
+                and I had been saving for a new computer. When I saved up some money, I couldn't figure out what was perfect for me?
+                Thankfully, PC-Recommender came in clutch and suggested me a new powerful gaming computer! Thanks a lot! I'm so happy with my new Mac Mini </p> <br> 
+        </div>
+        <div id="Reviewer">
+            <h4>Pencho69</h4>
+            <p>PC-Recommender is really the best website for getting recommended a new PC. I had a budget of 1000 leva about to go into a new PC.
+                I put my preferences and got suggested a new PC. Then I went and bought the PC. However, on my way home, I got robbed and didn't go
+                home with my new PC, but the site is great. </p> <br>
+        </div>
+        <div id="Reviewer">
+            <h4>Venelin Zhelev </h4>
+            <p>PC-Recommender is the best site ever. I don't know much about it, the creator just paid me to say something positive. But yeah it's cool</p> <br>
+        </div>
+        <div id="Reviewer">
+            <h4>Ivan Ivanov</h4>
+            <p>Certainly! Here's a short positive review for a website that recommends new computers: I recently used PC-Recommender
+                to find a new computer, and I couldn't be happier with the experience. The site is incredibly user-friendly and offers
+                personalized recommendations based on your specific needs and budget. I was particularly impressed with the detailed
+                comparison charts and in-depth reviews of each option. The recommendation I received was spot-on, and I'm thrilled with
+                my new computer. If you're in the market for a new device and want expert guidance, PC-Recommender is the place to go!</p> <br>
+        </div>
+    </div>
 </body>
 </html>

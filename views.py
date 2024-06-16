@@ -1,6 +1,5 @@
-from flask import Blueprint, redirect, render_template, request, url_for, send_file
-from random import randrange
-import io
+from flask import Blueprint, redirect, render_template, request, url_for
+from abc import ABC, abstractmethod
 
 views = Blueprint(__name__, "views")
 
@@ -14,8 +13,7 @@ form_data = {
 
 @views.route("/")
 def home():
-    text1 = randrange(100)
-    return render_template("index.html", text=text1)
+    return render_template("index.html")
 
 
 @views.route("/about")
@@ -35,109 +33,130 @@ def recommender():
     pc = None
     links = None
     image = None
+    index = None
+    system = None
+    budget = int(request.form['Budget'])
+    usage = request.form["Usage"]
+    portability = request.form['Portability']
+    os = request.form["OS"]
+    prebuilt = request.form['Prebuilt']
 
     if request.method == 'GET':
         return redirect(url_for('views.preferences', error='Please enter your preferences first!'))
     if request.method == 'POST':
-        if request.form['Budget'] < str(0):
+        if budget < 0:
             error = 'Please enter a valid number for your budget!'
 
-        if 0 < int(request.form['Budget']) < 380:
+        if 0 <= budget < 380:
             return "<h1>You are too poor to afford a PC 🤣🤣🤣</h1> \
             <a href='https://www.jobs.bg/'> Fix that </a> \
             <br> \
             <a href='/'>Vurni se</a>"
 
-        if request.form['Portability'] == 'No' and request.form['Prebuilt'] != 'Yes':
-            pc, links, image = pickAComputer('configs.txt')
-        elif request.form['Portability'] == 'No' and request.form['Prebuilt'] != 'No':
-            pc, links, image = pickAComputer('prebuilts.txt')
-        elif request.form['Portability'] == 'Yes':
-            pc, links, image = pickAComputer('laptops.txt')
+        if portability == 'No' and prebuilt != 'Yes':
+            system = Computer(pc, links, image)
+            index = system.picker(budget, usage, os)
+            pc, links, image = system.file('configs.txt', index)
+        elif portability == 'No' and prebuilt != 'No':
+            system = Prebuilt(pc, links, image)
+            index = system.picker(budget, usage, os)
+            pc, links, image = system.file('prebuilts.txt', index)
+        elif portability == 'Yes':
+            system = Laptop(pc, links, image)
+            index = system.picker(budget, usage, os)
+            pc, links, image = system.file('laptops.txt', index)
         else:
             error = 'Please try again later!'
 
         if error:
             return redirect(url_for('views.preferences', error=error))
+        else:  
+            return render_template('recommender.html', form_data=request.form, PC=pc, links=links, image=image)
 
-        return render_template('recommender.html', form_data=request.form, PC=pc, links=links, image=image)
 
+class System():
+    def __init__(self, pc, links, image):
+        self._pc = pc
+        self._links = links
+        self._image = image
 
-def pickAComputer(file):
-    config = open(file, 'r')
-    lines = config.readlines()
-    index = None
-    pc = None
-    links = None
-    image = None
-    pcb = 0
+    def picker(self, budget, usage, os):
+        index = None
 
-    for line in lines:
-        if 380 <= int(request.form['Budget']) < 620:
+        if 380 <= budget < 620:
             index = 0
-        elif 620 <= int(request.form['Budget']) < 920:
+        elif 620 <= budget < 920:
             index = 1
-        elif 920 <= int(request.form['Budget']) < 1290:
+        elif 920 <= budget < 1290:
             index = 2
-        elif 1290 <= int(request.form['Budget']) < 1900:
-            if request.form['Usage'] == 'Gaming':
+        elif 1290 <= budget < 1900:
+            if usage == 'Gaming':
                 index = 3
             else:
                 index = 4
 
-        elif 1900 <= int(request.form['Budget']):
-            if request.form['OS'] == "Windows" or request.form['Usage'] == 'Gaming':
+        elif 1900 <= budget:
+            if os == "Windows" or usage == 'Gaming':
                 index = 5
-            elif request.form['OS'] == "macOS" or request.form['Usage'] != "Gaming":
+            elif os == "macOS" or usage != "Gaming":
                 index = 6
 
-        if request.form['OS'] == "macOS":
+        if os == "macOS":
             index = 6
 
-        if request.form['Prebuilt'] == "Don't Care":
-            if (380 <= int(request.form['Budget']) <= 440 or 620 <= int(request.form['Budget']) <= 676 or
-                    939 <= int(request.form['Budget']) <= 1200 or 1500 <= int(request.form['Budget']) <= 1800):
-                pcb = 1
-            else:
-                pcb = 0
+        return index
 
-        if index is not None:
-            if request.form['Portability'] == 'No':
-                if request.form['Prebuilt'] == 'Yes' or pcb == 1:
-                    Brand, Model, Price, CPU, RAM, GPU, VRAM, Motherboard, Storage, PSU, Case, Cooler, OS, Link, Image = \
-                        lines[index].strip().split(', ')
-                    pc = {'Brand': Brand, "Model": Model, "Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM,
-                          "GPU VRAM": VRAM, "Motherboard": Motherboard, "Storage": Storage, "Power Supply Unit": PSU,
-                          "Computer Case": Case, "Operating System": OS}
-                    links = {'Computer Link': Link}
-                    image = Image
-                elif request.form['Prebuilt'] == 'No' or pcb == 0:
-                    (Price, CPU, RAM, GPU, VRAM, Motherboard, Storage, PSU, Case, Cooler, CPUl, Cl, Ml, RAMl, GPUl,
-                     Sl, PSUl, Casel, Image) = lines[index].strip().split(', ')
-                    pc = {"Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM, "GPU VRAM": VRAM,
-                          "Motherboard": Motherboard, "Storage": Storage, "Power Supply Unit": PSU,
-                          "Computer Case": Case, "Cooler": Cooler}
-                    links = {"CPU Link": CPUl, "Cooler Link": Cl, "Motherboard Link": Ml, "RAM Link": RAMl,
-                             "GPU Link": GPUl, "Storage Link": Sl, "PSU Link": PSUl, "Case Link": Casel}
-                    image = Image
-
-            else:
-                (Brand, Model, Price, CPU, RAM, GPU, VRAM, Storage, DisplaySize, DisplayRes, DisplayBri,
-                 Battery, Camera, Bluetooth, wifi, Weight, PA, OS, Color, Link, Image) = lines[index].strip().split(
-                    ', ')
-                pc = {'Brand': Brand, "Model": Model, "Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM,
-                      "GPU VRAM": VRAM, "Storage": Storage, "Display": DisplaySize, "Resolution": DisplayRes,
-                      "Display Brightness": DisplayBri, "Battery": Battery, "Camera": Camera, "Bluetooth": Bluetooth,
-                      "Wi-FI": wifi, "Laptop Weight": Weight, "Power Adapter": PA,
-                      "Operating System": OS, "Laptop Color": Color}
-                links = {'Laptop Link': Link}
-                image = Image
-
-    return pc, links, image
+    @abstractmethod
+    def file(self, file, index):
+        pass
 
 
-# def download(pc):
-#     buffer = io.BytesIO()
-#     buffer.write(pc.encode('utf-8'))
-#     buffer.seek(0)
-#     return send_file(buffer, as_attachment=True, download_name='pc_specs.txt', mimetype='text/plain')
+class Prebuilt(System):
+    def file(self, file, index):
+        config = open(file, 'r')
+        lines = config.readlines()
+
+        Brand, Model, Price, CPU, RAM, GPU, VRAM, Motherboard, Storage, PSU, Case, Cooler, OS, Link, Image = lines[
+            index].strip().split(', ')
+        self._pc = {'Brand': Brand, "Model": Model, "Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM,
+                    "GPU VRAM": VRAM, "Motherboard": Motherboard, "Storage": Storage, "Power Supply Unit": PSU,
+                    "Computer Case": Case, "Cooler": Cooler, "Operating System": OS}
+        self._links = {'Computer Link': Link}
+        self._image = Image
+
+        return self._pc, self._links, self._image
+
+
+class Computer(System):
+    def file(self, file, index):
+        config = open(file, 'r')
+        lines = config.readlines()
+
+        (Price, CPU, RAM, GPU, VRAM, Motherboard, Storage, PSU, Case, Cooler, CPUl, Cl, Ml, RAMl, GPUl,
+         Sl, PSUl, Casel, Image) = lines[index].strip().split(', ')
+        self._pc = {"Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM, "GPU VRAM": VRAM,
+                    "Motherboard": Motherboard, "Storage": Storage, "Power Supply Unit": PSU,
+                    "Computer Case": Case, "Cooler": Cooler}
+        self._links = {"CPU Link": CPUl, "Cooler Link": Cl, "Motherboard Link": Ml, "RAM Link": RAMl,
+                       "GPU Link": GPUl, "Storage Link": Sl, "PSU Link": PSUl, "Case Link": Casel}
+        self._image = Image
+
+        return self._pc, self._links, self._image
+
+
+class Laptop(System):
+    def file(self, file, index):
+        config = open(file, 'r')
+        lines = config.readlines()
+
+        (Brand, Model, Price, CPU, RAM, GPU, VRAM, Storage, DisplaySize, DisplayRes, DisplayBri,
+         Battery, Camera, Bluetooth, wifi, Weight, PA, OS, Color, Link, Image) = lines[index].strip().split(', ')
+        self._pc = {'Brand': Brand, "Model": Model, "Price": Price, 'CPU': CPU, 'GPU': GPU, 'RAM': RAM,
+                    "GPU VRAM": VRAM, "Storage": Storage, "Display": DisplaySize, "Resolution": DisplayRes,
+                    "Display Brightness": DisplayBri, "Battery": Battery, "Camera": Camera, "Bluetooth": Bluetooth,
+                    "Wi-FI": wifi, "Laptop Weight": Weight, "Power Adapter": PA, "Operating System": OS,
+                    "Laptop Color": Color}
+        self._links = {'Laptop Link': Link}
+        self._image = Image
+
+        return self._pc, self._links, self._image
